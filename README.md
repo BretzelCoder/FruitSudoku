@@ -7,7 +7,7 @@ Un jeu de Sudoku moderne et coloré utilisant des fruits, légumes et autres th�
 
 ## ✨ Fonctionnalités
 
-- 🎨 **4 thèmes visuels** : Fruits & Légumes, Fruits uniquement, Légumes uniquement, Acteurs & Actrices
+- 🎨 **4 thèmes visuels** : Fruits & Légumes, Fruits uniquement, Légumes uniquement
 - 🎮 **3 niveaux de difficulté** : Facile (40 indices), Moyen (30 indices), Difficile (25 indices)
 - 💡 **Système d'aide intelligent** : Obtenez la solution d'une case spécifique
 - ✅ **Vérification en temps réel** : Vérifiez vos cases sans perdre votre progression
