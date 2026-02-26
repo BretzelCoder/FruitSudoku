@@ -18,11 +18,6 @@ const THEMES = {
         name: 'Légumes uniquement',
         icons: ['🥕', '🥬', '🍅', '🥒', '🥔', '🧅', '🌶️', '🥦', '🌽'],
         labels: ['Carotte', 'Salade', 'Tomate', 'Concombre', 'Pomme de terre', 'Oignon', 'Piment', 'Brocoli', 'Maïs']
-    },
-    'acteurs': {
-        name: 'Acteurs & Actrices',
-        icons: ['👨‍🎤', '👩‍🎤', '🕴️', '👸', '🤵', '👩‍💼', '👨‍💼', '🧙‍♀️', '🦸‍♂️'],
-        labels: ['Leonardo', 'Scarlett', 'Robert', 'Emma', 'Ryan', 'Jennifer', 'Tom', 'Meryl', 'Chris']
     }
 };
 
