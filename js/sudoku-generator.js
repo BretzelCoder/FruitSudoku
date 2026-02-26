@@ -132,7 +132,7 @@ class SudokuGenerator {
      * Crée le masque de cellules pré-remplies
      * @private
      */
-    _createPrefilledMask(difficulty) {
+    _createPrefilledMask_old(difficulty) {
         const config = DIFFICULTY_CONFIG[difficulty];
         const cellsToKeep = config.cellsToKeep;
         const cellsToRemove = TOTAL_CELLS - cellsToKeep;
@@ -149,6 +149,46 @@ class SudokuGenerator {
         this._shuffleArray(positions);
         
         // Retirer les cellules
+        for (let k = 0; k < cellsToRemove; k++) {
+            const [i, j] = positions[k];
+            this.grid[i][j] = 0;
+        }
+        
+        // Créer le masque de cellules pré-remplies
+        const prefilled = this._createEmptyGrid();
+        for (let i = 0; i < GRID_SIZE; i++) {
+            for (let j = 0; j < GRID_SIZE; j++) {
+                prefilled[i][j] = this.grid[i][j] !== 0;
+            }
+        }
+        
+        return prefilled;
+    }
+
+    /**
+     * Crée le masque de cellules pré-remplies avec distribution uniforme
+     * @private
+     */
+    _createPrefilledMask(difficulty) {
+        const config = DIFFICULTY_CONFIG[difficulty];
+        const cellsToKeep = config.cellsToKeep;
+        const cellsToRemove = TOTAL_CELLS - cellsToKeep;
+        
+        // Créer une liste de toutes les positions
+        const positions = [];
+        for (let i = 0; i < GRID_SIZE; i++) {
+            for (let j = 0; j < GRID_SIZE; j++) {
+                positions.push([i, j]);
+            }
+        }
+        
+        // Mélanger VRAIMENT aléatoirement avec Fisher-Yates
+        for (let i = positions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [positions[i], positions[j]] = [positions[j], positions[i]];
+        }
+        
+        // Retirer les cellules selon l'ordre mélangé
         for (let k = 0; k < cellsToRemove; k++) {
             const [i, j] = positions[k];
             this.grid[i][j] = 0;
