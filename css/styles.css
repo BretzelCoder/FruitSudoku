@@ -705,3 +705,208 @@ button:disabled,
         box-shadow: none;
     }
 }
+
+/* ===== SÉLECTEUR DE LANGUE (DROPDOWN) - VERSION COMPACTE ===== */
+.language-selector {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 100;
+}
+
+.lang-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    font-size: 0.85em;
+}
+
+.lang-dropdown-btn:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+    background: white;
+}
+
+.lang-dropdown-btn:active {
+    transform: translateY(0);
+}
+
+.current-flag {
+    font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.dropdown-arrow {
+    font-size: 0.6em;
+    color: #999;
+    transition: transform var(--transition-fast);
+}
+
+.lang-dropdown-btn.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.lang-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    min-width: 120px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all var(--transition-normal);
+    pointer-events: none;
+}
+
+.lang-dropdown-menu:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    font-size: 0.85em;
+    text-align: left;
+}
+
+.lang-option:hover {
+    background: #f5f5f5;
+}
+
+.lang-option.active {
+    background: linear-gradient(45deg, rgba(52, 152, 219, 0.08), rgba(41, 128, 185, 0.08));
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.lang-option .flag {
+    font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.lang-option .lang-name {
+    color: var(--color-secondary);
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.lang-option.active .lang-name {
+    color: var(--color-primary);
+}
+
+/* Animation d'ouverture */
+@keyframes dropdownOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .language-selector {
+        top: 12px;
+        right: 12px;
+    }
+    
+    .lang-dropdown-btn {
+        padding: 5px 8px;
+        font-size: 0.85em;
+    }
+    
+    .current-flag {
+        font-size: 1.1em;
+    }
+    
+    .lang-dropdown-menu {
+        min-width: 130px;
+    }
+    
+    .lang-option {
+        padding: 7px 10px;
+        font-size: 0.85em;
+        gap: 6px;
+    }
+    
+    .lang-option .flag {
+        font-size: 1.1em;
+    }
+    
+    .lang-option .lang-name {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    .language-selector {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .lang-dropdown-btn {
+        padding: 4px 7px;
+        font-size: 0.8em;
+        gap: 3px;
+    }
+    
+    .current-flag {
+        font-size: 1em;
+    }
+    
+    .dropdown-arrow {
+        font-size: 0.5em;
+    }
+    
+    .lang-dropdown-menu {
+        min-width: 120px;
+    }
+    
+    .lang-option {
+        padding: 6px 8px;
+        font-size: 0.8em;
+    }
+    
+    .lang-option .flag {
+        font-size: 1em;
+    }
+    
+    .lang-option .lang-name {
+        font-size: 0.8em;
+    }
+}
+
+/* ===== SUPPORT DES EMOJIS DE DRAPEAUX ===== */
+.current-flag,
+.lang-option .flag {
+    font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    font-size: 1.5em;
+}

@@ -52,6 +52,7 @@ sudoku-fruits/
 │   ├── game.js            # Logique de jeu
 │   ├── ui.js              # Gestion de l'interface
 │   └── main.js            # Point d'entrée
+|   └── i18n.js            # Pour la gestion multi-langues
 ├── README.md              # Documentation
 └── .gitignore             # Fichiers ignorés par Git
 ```

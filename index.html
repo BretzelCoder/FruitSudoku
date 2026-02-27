@@ -3,48 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudoku Fruits & Légumes</title>
+    <title data-i18n="title">Sudoku Fruits & Légumes</title>
+
+    <!-- Police pour les emojis de drapeaux -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>🍎 Sudoku Fruits & Légumes 🥕</h1>
+        <!-- Sélecteur de langue avec dropdown -->
+        <div class="language-selector">
+            <button class="lang-dropdown-btn" id="langDropdownBtn">
+                <span class="current-flag" id="currentFlag">🇫🇷</span>
+                <span class="dropdown-arrow">▼</span>
+            </button>
+            <div class="lang-dropdown-menu hidden" id="langDropdownMenu">
+                <button class="lang-option" data-lang="fr">
+                    <span class="flag">🇫🇷</span>
+                    <span class="lang-name">Français</span>
+                </button>
+                <button class="lang-option" data-lang="en">
+                    <span class="flag">🇬🇧</span>
+                    <span class="lang-name">English</span>
+                </button>
+                <button class="lang-option" data-lang="de">
+                    <span class="flag">🇩🇪</span>
+                    <span class="lang-name">Deutsch</span>
+                </button>
+            </div>
+        </div>
+
+        <h1 data-i18n="title">🍎 Sudoku Fruits & Légumes 🥕</h1>
         
+        <!-- Le reste du HTML reste inchangé -->
         <div id="menuScreen" class="menu-screen">
             <div class="theme-selector">
-                <h2>Choisissez votre thème :</h2>
+                <h2 data-i18n="chooseTheme">Choisissez votre thème :</h2>
                 <div class="theme-buttons" id="menuThemeButtons"></div>
             </div>
+            
             <div class="legend" id="themeLegend"></div>
-            <h2>Choisissez votre niveau de difficulté :</h2>
+            
+            <h2 data-i18n="chooseDifficulty">Choisissez votre niveau de difficulté :</h2>
             <div class="difficulty-buttons">
                 <button class="difficulty-btn facile" data-difficulty="facile">
-                    🌱 Facile<br><small>40 indices</small>
+                    <span class="difficulty-emoji">🌱</span>
+                    <span class="difficulty-label" data-i18n="difficulty.easy">Facile</span><br>
+                    <small class="difficulty-desc" data-i18n="difficulty.easy.desc">40 indices</small>
                 </button>
                 <button class="difficulty-btn moyen" data-difficulty="moyen">
-                    🌿 Moyen<br><small>30 indices</small>
+                    <span class="difficulty-emoji">🌿</span>
+                    <span class="difficulty-label" data-i18n="difficulty.medium">Moyen</span><br>
+                    <small class="difficulty-desc" data-i18n="difficulty.medium.desc">30 indices</small>
                 </button>
                 <button class="difficulty-btn difficile" data-difficulty="difficile">
-                    🌳 Difficile<br><small>25 indices</small>
+                    <span class="difficulty-emoji">🌳</span>
+                    <span class="difficulty-label" data-i18n="difficulty.hard">Difficile</span><br>
+                    <small class="difficulty-desc" data-i18n="difficulty.hard.desc">25 indices</small>
                 </button>
             </div>
         </div>
 
         <div id="gameScreen" class="game-screen hidden">
             <div class="game-info">
-                <div class="info-item">⏱️ Temps: <span id="timer">00:00</span></div>
-                <div class="info-item">💡 Aides: <span id="helpCount">0</span></div>
-                <div class="info-item">🎨 Thème: <span id="currentTheme">-</span></div>
-                <div class="info-item">📊 Niveau: <span id="currentLevel">-</span></div>
-                <div class="info-item">✅ Vérification: <span id="verifyStatus">-</span></div>
+                <div class="info-item">
+                    <span data-i18n="game.time">Temps</span>: <span id="timer">00:00</span>
+                </div>
+                <div class="info-item">
+                    <span data-i18n="game.helps">Aides</span>: <span id="helpCount">0</span>
+                </div>
+                <div class="info-item">
+                    <span data-i18n="game.theme">Thème</span>: <span id="currentTheme">-</span>
+                </div>
+                <div class="info-item">
+                    <span data-i18n="game.level">Niveau</span>: <span id="currentLevel">-</span>
+                </div>
+                <div class="info-item">
+                    <span data-i18n="game.verification">Vérification</span>: <span id="verifyStatus">-</span>
+                </div>
             </div>
 
             <div class="controls">
-                <button class="control-btn help-btn" id="hintBtn">💡 Aide</button>
-                <button class="control-btn verify-btn" id="verifyBtn">✅ Vérifier</button>
-                <button class="control-btn theme-switch-btn" id="themeSwitchBtn">🎨 Changer thème</button>
-                <button class="control-btn restart-btn" id="restartBtn">🔄 Recommencer</button>
-                <button class="control-btn menu-btn" id="menuBtn">🏠 Menu</button>
+                <button class="control-btn help-btn" id="hintBtn" data-i18n="btn.help">💡 Aide</button>
+                <button class="control-btn verify-btn" id="verifyBtn" data-i18n="btn.verify">✅ Vérifier</button>
+                <button class="control-btn theme-switch-btn" id="themeSwitchBtn" data-i18n="btn.changeTheme">🎨 Changer thème</button>
+                <button class="control-btn restart-btn" id="restartBtn" data-i18n="btn.restart">🔄 Recommencer</button>
+                <button class="control-btn menu-btn" id="menuBtn" data-i18n="btn.menu">🏠 Menu</button>
             </div>
 
             <div class="sudoku-grid" id="sudokuGrid"></div>
@@ -53,25 +100,26 @@
 
         <div id="victoryModal" class="modal-overlay hidden">
             <div class="modal-content">
-                <h2>🎉 Félicitations ! 🎉</h2>
+                <h2 data-i18n="victory.title">🎉 Félicitations ! 🎉</h2>
                 <div class="victory-stats">
-                    <p>⏱️ Temps: <span id="finalTime">-</span></p>
-                    <p>💡 Aides: <span id="finalHelps">-</span></p>
-                    <p>📊 Niveau: <span id="finalLevel">-</span></p>
+                    <p><span data-i18n="victory.time">Temps</span>: <span id="finalTime">-</span></p>
+                    <p><span data-i18n="victory.helps">Aides</span>: <span id="finalHelps">-</span></p>
+                    <p><span data-i18n="victory.level">Niveau</span>: <span id="finalLevel">-</span></p>
                 </div>
-                <button class="difficulty-btn facile" id="victoryMenuBtn">🏠 Retour au menu</button>
+                <button class="difficulty-btn facile" id="victoryMenuBtn" data-i18n="victory.backToMenu">🏠 Retour au menu</button>
             </div>
         </div>
 
         <div id="themeModal" class="modal-overlay hidden">
             <div class="modal-content">
-                <h3>🎨 Changer de thème</h3>
+                <h3 data-i18n="themeModal.title">🎨 Changer de thème</h3>
                 <div class="theme-buttons" id="modalThemeButtons"></div>
-                <button class="control-btn menu-btn" id="closeThemeModalBtn">❌ Fermer</button>
+                <button class="control-btn menu-btn" id="closeThemeModalBtn" data-i18n="btn.close">❌ Fermer</button>
             </div>
         </div>
     </div>
 
+    <script src="js/i18n.js"></script>
     <script src="js/config.js"></script>
     <script src="js/sudoku-generator.js"></script>
     <script src="js/game.js"></script>

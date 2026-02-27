@@ -7,7 +7,9 @@ class SudokuUI {
         this.game = game;
         this.elements = this._getElements();
         this._setupEventListeners();
+        this._setupLanguageSelector();
         this._initializeThemeButtons();
+        this.updateAllTranslations();
     }
 
     /**
@@ -84,6 +86,102 @@ class SudokuUI {
     }
 
     /**
+     * Configure le sélecteur de langue (dropdown)
+     * @private
+     */
+    _setupLanguageSelector() {
+        const dropdownBtn = document.getElementById('langDropdownBtn');
+        const dropdownMenu = document.getElementById('langDropdownMenu');
+        const currentFlag = document.getElementById('currentFlag');
+        const langOptions = document.querySelectorAll('.lang-option');
+        
+        // Mapping des langues vers les drapeaux
+        const languageFlags = {
+            'fr': '🇫🇷',
+            'en': '🇬🇧',
+            'de': '🇩🇪'
+        };
+        
+        // Mettre à jour le drapeau actuel et marquer l'option active
+        const updateCurrentLanguage = (lang) => {
+            const flag = languageFlags[lang];
+            if (flag) {
+                currentFlag.textContent = flag;
+            }
+            
+            // Marquer l'option active
+            langOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.lang === lang);
+            });
+        };
+        
+        // Initialiser avec la langue actuelle
+        const currentLang = i18n.getLanguage();
+        updateCurrentLanguage(currentLang);
+        
+        // Toggle du menu dropdown
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = !dropdownMenu.classList.contains('hidden');
+            
+            if (isOpen) {
+                dropdownMenu.classList.add('hidden');
+                dropdownBtn.classList.remove('open');
+            } else {
+                dropdownMenu.classList.remove('hidden');
+                dropdownBtn.classList.add('open');
+            }
+        });
+        
+        // Fermer le dropdown si on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!dropdownMenu.contains(e.target) && e.target !== dropdownBtn) {
+                dropdownMenu.classList.add('hidden');
+                dropdownBtn.classList.remove('open');
+            }
+        });
+        
+        // Gestion du clic sur une option de langue
+        langOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const lang = option.dataset.lang;
+                
+                // Changer la langue
+                this._onLanguageChange(lang);
+                
+                // Mettre à jour l'affichage
+                updateCurrentLanguage(lang);
+                
+                // Fermer le dropdown
+                dropdownMenu.classList.add('hidden');
+                dropdownBtn.classList.remove('open');
+            });
+        });
+    }
+
+    /**
+     * Gestion du changement de langue
+     * @private
+     */
+    _onLanguageChange(lang) {
+        console.log(`Changement de langue vers: ${lang}`);
+        
+        // Changer la langue
+        i18n.setLanguage(lang);
+        
+        // Mettre à jour les boutons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+        
+        // Mettre à jour toutes les traductions
+        this.updateAllTranslations();
+        
+        // Mettre à jour l'attribut lang du HTML
+        document.documentElement.lang = lang;
+    }
+
+    /**
      * Initialise les boutons de thème
      * @private
      */
@@ -110,7 +208,9 @@ class SudokuUI {
             const btn = document.createElement('button');
             btn.className = 'theme-btn';
             btn.dataset.theme = themeId;
-            btn.textContent = `${theme.icons[0]}${theme.icons[5] || theme.icons[1]} ${theme.name}`;
+            
+            const translatedName = i18n.t(theme.nameKey);
+            btn.textContent = `${theme.icons[0]}${theme.icons[5] || theme.icons[1]} ${translatedName}`;
             
             if (themeId === this.game.currentTheme) {
                 btn.classList.add('active');
@@ -123,6 +223,38 @@ class SudokuUI {
     }
 
     /**
+     * Met à jour les boutons de thème avec les traductions
+     * @private
+     */
+    _updateThemeButtons() {
+        document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
+            const themeId = btn.dataset.theme;
+            const theme = THEMES[themeId];
+            if (theme) {
+                const translatedName = i18n.t(theme.nameKey);
+                btn.textContent = `${theme.icons[0]}${theme.icons[5] || theme.icons[1]} ${translatedName}`;
+            }
+        });
+    }
+
+    /**
+     * Met à jour toutes les traductions de la page
+     */
+    updateAllTranslations() {
+        // Traductions automatiques via data-i18n
+        i18n.updatePageTranslations();
+        
+        // Mettre à jour les éléments dynamiques
+        this.updateThemeLegend();
+        this._updateThemeButtons();
+        
+        // Mettre à jour les infos de jeu si une partie est en cours
+        if (!this.elements.gameScreen.classList.contains('hidden')) {
+            this.updateGameInfo();
+        }
+    }
+
+    /**
      * Met à jour la légende des thèmes
      */
     updateThemeLegend() {
@@ -132,9 +264,13 @@ class SudokuUI {
         theme.icons.forEach((icon, index) => {
             const item = document.createElement('div');
             item.className = 'legend-item';
+            
+            const labelKey = theme.labelKeys[index];
+            const translatedLabel = i18n.t(labelKey);
+            
             item.innerHTML = `
                 <span class="legend-icon">${icon}</span>
-                <span>${theme.labels[index]} = ${index + 1}</span>
+                <span>${translatedLabel} = ${index + 1}</span>
             `;
             this.elements.themeLegend.appendChild(item);
         });
@@ -242,8 +378,11 @@ class SudokuUI {
         const theme = this.game.getCurrentTheme();
         const difficulty = this.game.state.difficulty;
         
-        this.elements.currentTheme.textContent = theme.name;
-        this.elements.currentLevel.textContent = DIFFICULTY_CONFIG[difficulty]?.label || '-';
+        const translatedThemeName = i18n.t(theme.nameKey);
+        const translatedDifficultyLabel = i18n.t(DIFFICULTY_CONFIG[difficulty]?.labelKey);
+        
+        this.elements.currentTheme.textContent = translatedThemeName;
+        this.elements.currentLevel.textContent = translatedDifficultyLabel || '-';
         this.elements.helpCount.textContent = this.game.state.helpUsed;
         this.elements.verifyStatus.textContent = '-';
         this.elements.verifyStatus.style.color = '#2c3e50';
@@ -258,7 +397,7 @@ class SudokuUI {
         
         this.elements.finalTime.textContent = stats.time;
         this.elements.finalHelps.textContent = stats.helps;
-        this.elements.finalLevel.textContent = stats.difficultyLabel;
+        this.elements.finalLevel.textContent = i18n.t(DIFFICULTY_CONFIG[this.game.state.difficulty]?.labelKey);
         
         this.elements.victoryModal.classList.remove('hidden');
     }
@@ -293,12 +432,12 @@ class SudokuUI {
      * @private
      */
     _onCellClick(row, col, clickedCell) {
-        console.log(`Cellule cliquée: ligne ${row}, colonne ${col}`); // Debug
+        console.log(`Cellule cliquée: ligne ${row}, colonne ${col}`);
         
         const success = this.game.selectCell(row, col);
         
         if (!success) {
-            console.log('Cellule non sélectionnable (pré-remplie)'); // Debug
+            console.log('Cellule non sélectionnable (pré-remplie)');
             return;
         }
         
@@ -309,7 +448,7 @@ class SudokuUI {
         
         // Sélectionner la nouvelle cellule
         clickedCell.classList.add('selected');
-        console.log('Cellule sélectionnée avec succès'); // Debug
+        console.log('Cellule sélectionnée avec succès');
         
         // Retirer la sélection des symboles
         document.querySelectorAll('.symbol-btn').forEach(btn => {
@@ -322,17 +461,18 @@ class SudokuUI {
      * @private
      */
     _onSymbolClick(value) {
-        console.log(`Symbole cliqué: ${value}`); // Debug
+        console.log(`Symbole cliqué: ${value}`);
         
         if (!this.game.state.selectedCell) {
-            this.showMessage('Sélectionnez d\'abord une cellule !', MESSAGE_TYPES.WARNING);
+            this.showMessage(i18n.t('msg.selectCell'), MESSAGE_TYPES.WARNING);
             return;
         }
         
         const result = this.game.placeValue(value);
         
         if (!result.success) {
-            this.showMessage(result.error, MESSAGE_TYPES.ERROR);
+            const errorMsg = result.errorKey ? i18n.t(result.errorKey) : result.error;
+            this.showMessage(errorMsg, MESSAGE_TYPES.ERROR);
             return;
         }
         
@@ -349,7 +489,7 @@ class SudokuUI {
             // Effacer la cellule
             cell.textContent = '';
             cell.classList.remove('error', 'hint');
-            console.log('Cellule effacée'); // Debug
+            console.log('Cellule effacée');
         } else {
             // Placer le symbole
             cell.textContent = theme.icons[value - 1];
@@ -359,14 +499,14 @@ class SudokuUI {
                 // Afficher l'erreur
                 cell.classList.add('error');
                 setTimeout(() => cell.classList.remove('error'), ANIMATION_DURATIONS.ERROR_SHAKE);
-                console.log('Placement invalide'); // Debug
+                console.log('Placement invalide');
             } else {
                 cell.classList.remove('error');
-                console.log('Placement valide'); // Debug
+                console.log('Placement valide');
                 
                 if (result.isComplete) {
                     // Victoire !
-                    console.log('Grille complète - Victoire !'); // Debug
+                    console.log('Grille complète - Victoire !');
                     setTimeout(() => this.showVictoryModal(), 500);
                 }
             }
@@ -378,7 +518,7 @@ class SudokuUI {
      * @private
      */
     _onStartGame(difficulty) {
-        console.log(`Démarrage d'une nouvelle partie en mode: ${difficulty}`); // Debug
+        console.log(`Démarrage d'une nouvelle partie en mode: ${difficulty}`);
         
         try {
             this.game.startNewGame(difficulty);
@@ -392,7 +532,7 @@ class SudokuUI {
                 this.elements.timer.textContent = time;
             });
             
-            console.log('Partie démarrée avec succès'); // Debug
+            console.log('Partie démarrée avec succès');
         } catch (error) {
             console.error('Erreur lors du démarrage de la partie:', error);
             this.showMessage('Erreur lors du démarrage de la partie', MESSAGE_TYPES.ERROR);
@@ -407,7 +547,8 @@ class SudokuUI {
         const result = this.game.useHint();
         
         if (!result.success) {
-            this.showMessage(result.error, MESSAGE_TYPES.WARNING);
+            const errorMsg = result.errorKey ? i18n.t(result.errorKey) : result.error;
+            this.showMessage(errorMsg, MESSAGE_TYPES.WARNING);
             return;
         }
         
@@ -454,16 +595,16 @@ class SudokuUI {
         
         // Mettre à jour le statut
         if (result.totalFilled === 0) {
-            this.elements.verifyStatus.textContent = 'Aucune case';
+            this.elements.verifyStatus.textContent = i18n.t('msg.noCellFilled');
             this.elements.verifyStatus.style.color = '#7f8c8d';
         } else if (result.incorrect === 0) {
             this.elements.verifyStatus.textContent = `${result.correct}/${result.totalFilled} ✓`;
             this.elements.verifyStatus.style.color = '#27ae60';
-            this.showMessage('🎉 Toutes les cases sont correctes !', MESSAGE_TYPES.SUCCESS);
+            this.showMessage(i18n.t('msg.allCorrect'), MESSAGE_TYPES.SUCCESS);
         } else {
-            this.elements.verifyStatus.textContent = `${result.correct}/${result.totalFilled} (${result.incorrect} erreurs)`;
+            this.elements.verifyStatus.textContent = `${result.correct}/${result.totalFilled} (${result.incorrect} ${i18n.t('msg.errorsFound')})`;
             this.elements.verifyStatus.style.color = '#e74c3c';
-            this.showMessage(`${result.incorrect} erreur(s) détectée(s)`, MESSAGE_TYPES.WARNING);
+            this.showMessage(`${result.incorrect} ${i18n.t('msg.errorsFound')}`, MESSAGE_TYPES.WARNING);
         }
     }
 
@@ -472,7 +613,7 @@ class SudokuUI {
      * @private
      */
     _onThemeChange(themeId) {
-        console.log(`Changement de thème vers: ${themeId}`); // Debug
+        console.log(`Changement de thème vers: ${themeId}`);
         
         this.game.changeTheme(themeId);
         
@@ -483,7 +624,8 @@ class SudokuUI {
         
         // Mettre à jour l'affichage
         this.updateThemeLegend();
-        this.elements.currentTheme.textContent = THEMES[themeId].name;
+        const translatedName = i18n.t(THEMES[themeId].nameKey);
+        this.elements.currentTheme.textContent = translatedName;
         
         // Si une partie est en cours, mettre à jour la grille
         if (!this.elements.gameScreen.classList.contains('hidden')) {
@@ -500,7 +642,7 @@ class SudokuUI {
      * @private
      */
     _onRestart() {
-        if (confirm('Êtes-vous sûr de vouloir recommencer ?')) {
+        if (confirm(i18n.t('msg.confirmRestart'))) {
             this._onStartGame(this.game.state.difficulty);
         }
     }
