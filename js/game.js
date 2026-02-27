@@ -89,7 +89,7 @@ class SudokuGame {
      */
     placeValue(value) {
         if (!this.state.selectedCell) {
-            return { success: false, error: 'Aucune cellule sélectionnée' };
+            return { success: false, errorKey: 'msg.selectCell' };
         }
 
         if (value < 1 || value > 9) {
@@ -100,7 +100,7 @@ class SudokuGame {
 
         // Vérifier si la cellule est pré-remplie
         if (this.state.prefilled[row][col]) {
-            return { success: false, error: 'Cellule pré-remplie' };
+            return { success: false, errorKey: 'msg.prefilledCell' };
         }
 
         // Si c'est la même valeur, effacer la cellule
@@ -183,13 +183,13 @@ class SudokuGame {
      */
     useHint() {
         if (!this.state.selectedCell) {
-            return { success: false, error: 'Aucune cellule sélectionnée' };
+            return { success: false, errorKey: 'msg.selectCell' };
         }
 
         const { row, col } = this.state.selectedCell;
 
         if (this.state.prefilled[row][col]) {
-            return { success: false, error: 'Cette cellule est déjà remplie' };
+            return { success: false, errorKey: 'msg.prefilledCell' };
         }
 
         // Obtenir la valeur correcte
