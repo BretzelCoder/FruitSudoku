@@ -67,7 +67,7 @@ body {
     color: var(--color-secondary);
 }
 
-/* ===== CONTENEUR PRINCIPAL ===== */
+/* ===== CONTENEUR PRINCIPAL - CORRECTIONS MOBILE ===== */
 .game-container {
     background: var(--bg-light);
     border-radius: var(--radius-xl);
@@ -76,6 +76,29 @@ body {
     backdrop-filter: blur(10px);
     max-width: 800px;
     width: 100%;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-container {
+        padding: 15px 10px;
+        border-radius: 10px;
+        min-height: 100vh;
+    }
+}
+
+/* Correction spécifique pour éviter le débordement */
+.game-screen {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* ===== TITRE ===== */
@@ -280,15 +303,15 @@ h3 {
     transform: translateY(-1px);
 }
 
-/* ===== GRILLE SUDOKU ===== */
+/* ===== GRILLE SUDOKU - CORRECTIONS RESPONSIVE ===== */
 .sudoku-grid {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 2px;
     background: var(--color-secondary);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xs);
-    margin: var(--spacing-md) auto;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 20px auto;
     max-width: 540px;
     box-shadow: var(--shadow-md);
 }
@@ -305,71 +328,63 @@ h3 {
     transition: all var(--transition-fast);
     border-radius: var(--radius-sm);
     user-select: none;
+    min-width: 0; /* Important */
 }
 
-.sudoku-cell:hover:not(.prefilled) {
-    background: var(--bg-hover);
-    transform: scale(1.05);
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+    .sudoku-grid {
+        max-width: 100%;
+        margin: 15px auto;
+        padding: 8px;
+    }
+    
+    .sudoku-cell {
+        font-size: 1.6em;
+    }
 }
 
-.sudoku-cell.selected {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+@media (max-width: 480px) {
+    .sudoku-grid {
+        margin: 12px 8px;
+        padding: 6px;
+        gap: 1px;
+        width: calc(100% - 16px);
+        max-width: none;
+    }
+    
+    .sudoku-cell {
+        font-size: 1.4em;
+        border-radius: 3px;
+    }
+    
+    .sudoku-cell:hover:not(.prefilled) {
+        transform: scale(1.02); /* Moins d'effet sur mobile */
+    }
 }
 
-.sudoku-cell.prefilled {
-    background: var(--bg-grey);
-    font-weight: bold;
-    cursor: default;
-}
-
-.sudoku-cell.prefilled:hover {
-    transform: none;
-}
-
-.sudoku-cell.error {
-    background: #ffebee;
-    animation: shake 0.5s ease-in-out;
-}
-
-.sudoku-cell.hint {
-    background: #e8f5e8;
-    animation: pulse 1s ease-in-out;
-}
-
-.sudoku-cell.correct {
-    background: #d5f4e6;
-    border: 2px solid var(--color-success);
-    animation: correctPulse 0.6s ease-in-out;
-}
-
-.sudoku-cell.incorrect {
-    background: #ffeaa7;
-    border: 2px solid #fdcb6e;
-    animation: incorrectShake 0.6s ease-in-out;
-}
-
-/* Bordures épaisses pour les blocs 3x3 */
-.sudoku-cell:nth-child(3n):not(:nth-child(9n)) {
-    border-right: 3px solid var(--color-secondary);
-}
-
-.sudoku-cell:nth-child(n+19):nth-child(-n+27),
-.sudoku-cell:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 3px solid var(--color-secondary);
+/* iPhone SE et très petits écrans */
+@media (max-width: 380px) {
+    .sudoku-grid {
+        margin: 10px 6px;
+        padding: 5px;
+    }
+    
+    .sudoku-cell {
+        font-size: 1.2em;
+    }
 }
 
 /* ===== SÉLECTEUR DE SYMBOLES ===== */
 .symbol-selector {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
-    gap: var(--spacing-xs);
+    gap: 8px;
     max-width: 540px;
-    margin: var(--spacing-md) auto;
-    padding: var(--spacing-sm);
+    margin: 20px auto;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.8);
-    border-radius: var(--radius-lg);
+    border-radius: 15px;
     box-shadow: var(--shadow-sm);
 }
 
@@ -377,7 +392,7 @@ h3 {
     aspect-ratio: 1;
     border: 2px solid #ddd;
     background: var(--bg-white);
-    border-radius: var(--radius-md);
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1.8em;
     display: flex;
@@ -385,6 +400,7 @@ h3 {
     justify-content: center;
     transition: all var(--transition-fast);
     user-select: none;
+    min-width: 0; /* Important pour éviter le débordement */
 }
 
 .symbol-btn:hover {
@@ -397,6 +413,59 @@ h3 {
     border-color: var(--color-primary);
     background: var(--bg-hover);
     transform: scale(1.1);
+}
+
+/* Responsive - Corrections pour mobile */
+@media (max-width: 768px) {
+    .symbol-selector {
+        gap: 6px;
+        padding: 12px;
+        max-width: 100%;
+        margin: 15px auto;
+    }
+    
+    .symbol-btn {
+        font-size: 1.5em;
+        border-width: 1.5px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .symbol-selector {
+        gap: 4px;
+        padding: 10px 8px;
+        margin: 12px 8px;
+        width: calc(100% - 16px);
+        max-width: none;
+    }
+    
+    .symbol-btn {
+        font-size: 1.3em;
+        border-width: 1px;
+        border-radius: 6px;
+    }
+    
+    .symbol-btn:hover {
+        transform: scale(1.05); /* Moins d'effet sur mobile */
+    }
+    
+    .symbol-btn.selected {
+        transform: scale(1.05);
+    }
+}
+
+/* Pour très petits écrans (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    .symbol-selector {
+        gap: 3px;
+        padding: 8px 6px;
+        margin: 10px 6px;
+    }
+    
+    .symbol-btn {
+        font-size: 1.1em;
+    }
 }
 
 /* ===== MODALS ===== */
@@ -909,4 +978,19 @@ button:disabled,
 .lang-option .flag {
     font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
     font-size: 1.5em;
+}
+
+/* ===== SUPPORT SAFE AREA IPHONE ===== */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+    
+    .game-container {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+        padding-bottom: max(15px, env(safe-area-inset-bottom));
+    }
 }
