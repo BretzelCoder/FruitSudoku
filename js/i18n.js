@@ -66,6 +66,7 @@ const TRANSLATIONS = {
         'btn.restart': '🔄 Recommencer',
         'btn.menu': '🏠 Menu',
         'btn.close': '❌ Fermer',
+        'btn.stats': '📊 Statistiques',
         
         // Messages
         'msg.selectCell': 'Sélectionnez d\'abord une cellule !',
@@ -83,7 +84,17 @@ const TRANSLATIONS = {
         'victory.backToMenu': '🏠 Retour au menu',
         
         // Modal thème
-        'themeModal.title': '🎨 Changer de thème'
+        'themeModal.title': '🎨 Changer de thème',
+
+        // Statistiques
+        'stats.title': '📊 Vos Statistiques',
+        'stats.noData': 'Aucune partie jouée pour le moment.',
+        'stats.totalGames': 'Parties',
+        'stats.perfect': 'Sans aide',
+        'stats.date': 'Date',
+        'stats.level': 'Niveau',
+        'stats.time': 'Temps',
+        'stats.helps': 'Aides'
     },
     
     'en': {
@@ -148,6 +159,7 @@ const TRANSLATIONS = {
         'btn.restart': '🔄 Restart',
         'btn.menu': '🏠 Menu',
         'btn.close': '❌ Close',
+        'btn.stats': '📊 Statistics',
         
         // Messages
         'msg.selectCell': 'Select a cell first!',
@@ -165,7 +177,17 @@ const TRANSLATIONS = {
         'victory.backToMenu': '🏠 Back to menu',
         
         // Theme modal
-        'themeModal.title': '🎨 Change theme'
+        'themeModal.title': '🎨 Change theme',
+
+        // Statistics
+        'stats.title': '📊 Your Statistics',
+        'stats.noData': 'No games played yet.',
+        'stats.totalGames': 'Games',
+        'stats.perfect': 'Perfect',
+        'stats.date': 'Date',
+        'stats.level': 'Level',
+        'stats.time': 'Time',
+        'stats.helps': 'Helps'
     },
     
     'de': {
@@ -230,6 +252,7 @@ const TRANSLATIONS = {
         'btn.restart': '🔄 Neu starten',
         'btn.menu': '🏠 Menü',
         'btn.close': '❌ Schließen',
+        'btn.stats': '📊 Statistik',
         
         // Nachrichten
         'msg.selectCell': 'Wählen Sie zuerst eine Zelle!',
@@ -247,7 +270,17 @@ const TRANSLATIONS = {
         'victory.backToMenu': '🏠 Zurück zum Menü',
         
         // Themenmodal
-        'themeModal.title': '🎨 Thema ändern'
+        'themeModal.title': '🎨 Thema ändern',
+
+        // Statistiken
+        'stats.title': '📊 Ihre Statistik',
+        'stats.noData': 'Noch keine Spiele gespielt.',
+        'stats.totalGames': 'Spiele',
+        'stats.perfect': 'Perfekt',
+        'stats.date': 'Datum',
+        'stats.level': 'Level',
+        'stats.time': 'Zeit',
+        'stats.helps': 'Hilfen'
     }
 };
 

@@ -66,6 +66,7 @@
                     <span class="difficulty-label" data-i18n="difficulty.hard">Difficile</span><br>
                     <small class="difficulty-desc" data-i18n="difficulty.hard.desc">25 indices</small>
                 </button>
+                <button class="control-btn menu-btn stats-btn" id="statsBtn" data-i18n="btn.stats" style="width: 100%; margin-top: 20px;">📊 Statistiques</button>
             </div>
         </div>
 
@@ -117,6 +118,14 @@
                 <h3 data-i18n="themeModal.title">🎨 Changer de thème</h3>
                 <div class="theme-buttons" id="modalThemeButtons"></div>
                 <button class="control-btn menu-btn" id="closeThemeModalBtn" data-i18n="btn.close">❌ Fermer</button>
+            </div>
+        </div>
+
+        <div id="statsModal" class="modal-overlay hidden">
+            <div class="modal-content stats-content">
+                <h3 data-i18n="stats.title">📊 Vos Statistiques</h3>
+                <div id="statsContainer" class="stats-container"></div>
+                <button class="control-btn menu-btn" id="closeStatsModalBtn" data-i18n="btn.close">❌ Fermer</button>
             </div>
         </div>
     </div>

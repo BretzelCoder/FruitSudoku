@@ -333,4 +333,30 @@ class SudokuGame {
             difficultyLabel: DIFFICULTY_CONFIG[this.state.difficulty]?.label || '-'
         };
     }
+
+    /**
+     * Sauvegarde les statistiques de la partie courante
+     */
+    saveGameStats() {
+        const history = this.getHistory();
+        const newEntry = {
+            date: new Date().toISOString(),
+            difficulty: this.state.difficulty,
+            time: this.getElapsedTime(),
+            helps: this.state.helpUsed,
+            theme: this.currentTheme
+        };
+        
+        history.push(newEntry);
+        localStorage.setItem('sudoku_fruits_history', JSON.stringify(history));
+    }
+
+    /**
+     * Récupère l'historique des parties
+     * @returns {Array} Liste des parties jouées
+     */
+    getHistory() {
+        const stored = localStorage.getItem('sudoku_fruits_history');
+        return stored ? JSON.parse(stored) : [];
+    }
 }
