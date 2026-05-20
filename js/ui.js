@@ -25,6 +25,7 @@ class SudokuUI {
             // Modals
             victoryModal: document.getElementById('victoryModal'),
             themeModal: document.getElementById('themeModal'),
+            statsModal: document.getElementById('statsModal'),
             
             // Grille et sélecteur
             sudokuGrid: document.getElementById('sudokuGrid'),
@@ -43,6 +44,7 @@ class SudokuUI {
             themeSwitchBtn: document.getElementById('themeSwitchBtn'),
             restartBtn: document.getElementById('restartBtn'),
             menuBtn: document.getElementById('menuBtn'),
+            statsBtn: document.getElementById('statsBtn'),
             
             // Stats de victoire
             finalTime: document.getElementById('finalTime'),
@@ -54,7 +56,9 @@ class SudokuUI {
             themeLegend: document.getElementById('themeLegend'),
             menuThemeButtons: document.getElementById('menuThemeButtons'),
             modalThemeButtons: document.getElementById('modalThemeButtons'),
-            closeThemeModalBtn: document.getElementById('closeThemeModalBtn')
+            closeThemeModalBtn: document.getElementById('closeThemeModalBtn'),
+            statsContainer: document.getElementById('statsContainer'),
+            closeStatsModalBtn: document.getElementById('closeStatsModalBtn')
         };
     }
 
@@ -78,11 +82,16 @@ class SudokuUI {
         this.elements.restartBtn.addEventListener('click', () => this._onRestart());
         this.elements.menuBtn.addEventListener('click', () => this._onShowMenu());
         
+        if (this.elements.statsBtn) {
+            this.elements.statsBtn.addEventListener('click', () => this._onShowStats());
+        }
+        
         // Modal de victoire
         this.elements.victoryMenuBtn.addEventListener('click', () => this._onShowMenu());
         
         // Modal de thème
         this.elements.closeThemeModalBtn.addEventListener('click', () => this._onCloseThemeModal());
+        this.elements.closeStatsModalBtn.addEventListener('click', () => this.elements.statsModal.classList.add('hidden'));
     }
 
     /**
@@ -284,6 +293,7 @@ class SudokuUI {
         this.elements.gameScreen.classList.remove('hidden');
         this.elements.victoryModal.classList.add('hidden');
         this.elements.themeModal.classList.add('hidden');
+        this.elements.statsModal.classList.add('hidden');
     }
 
     /**
@@ -294,6 +304,7 @@ class SudokuUI {
         this.elements.gameScreen.classList.add('hidden');
         this.elements.victoryModal.classList.add('hidden');
         this.elements.themeModal.classList.add('hidden');
+        this.elements.statsModal.classList.add('hidden');
         this.elements.menuScreen.classList.remove('hidden');
     }
 
@@ -393,6 +404,9 @@ class SudokuUI {
      */
     showVictoryModal() {
         this.game.stopTimer();
+        // Sauvegarder les stats
+        this.game.saveGameStats();
+
         const stats = this.game.getGameStats();
         
         this.elements.finalTime.textContent = stats.time;
@@ -669,5 +683,62 @@ class SudokuUI {
      */
     _onCloseThemeModal() {
         this.elements.themeModal.classList.add('hidden');
+    }
+
+    /**
+     * Gestion de l'affichage des statistiques
+     * @private
+     */
+    _onShowStats() {
+        const history = this.game.getHistory();
+        const container = this.elements.statsContainer;
+        
+        if (history.length === 0) {
+            container.innerHTML = `<p style="text-align:center; color: var(--color-grey-dark);">${i18n.t('stats.noData')}</p>`;
+        } else {
+            // Trier par date (plus récent en premier)
+            history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            let html = `
+                <div class="stats-summary-box">
+                    <div class="stat-item">
+                        <span class="stat-value">${history.length}</span>
+                        <span class="stat-label">${i18n.t('stats.totalGames')}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${history.filter(h => h.helps === 0).length}</span>
+                        <span class="stat-label">${i18n.t('stats.perfect')}</span>
+                    </div>
+                </div>
+                <div class="stats-list">
+                    <table class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>${i18n.t('stats.date')}</th>
+                                <th>${i18n.t('stats.level')}</th>
+                                <th>${i18n.t('stats.time')}</th>
+                                <th>${i18n.t('stats.helps')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            history.forEach(game => {
+                const date = new Date(game.date).toLocaleDateString();
+                const timeStr = this.game.formatTime(game.time);
+                html += `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${i18n.t(DIFFICULTY_CONFIG[game.difficulty]?.labelKey) || game.difficulty}</td>
+                        <td>${timeStr}</td>
+                        <td>${game.helps}</td>
+                    </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        }
+        
+        this.elements.statsModal.classList.remove('hidden');
     }
 }
