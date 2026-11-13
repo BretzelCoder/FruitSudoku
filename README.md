@@ -103,6 +103,10 @@ Le projet suit une architecture modulaire pour une meilleure maintenabilité :
 
 Pour activer les logs de développement, ouvrez la console du navigateur (F12).
 
+## 📈 Mesure d'audience
+
+La version en ligne (GitHub Pages) compte les visites avec [GoatCounter](https://www.goatcounter.com/) : sans cookie, sans donnée personnelle, statistiques agrégées uniquement (pages vues, provenance, pays, navigateur, taille d'écran). Elle enregistre aussi des événements anonymes : la langue affichée à l'ouverture et les changements de langue. Les statistiques de jeu restent dans votre navigateur (`localStorage`) et ne sont pas transmises. Une copie locale ne charge rien.
+
 ## 📝 Améliorations Futures
 
 - [ ] Sauvegarde automatique de la partie en cours

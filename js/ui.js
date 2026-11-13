@@ -127,6 +127,7 @@ class SudokuUI {
         // Initialiser avec la langue actuelle
         const currentLang = i18n.getLanguage();
         updateCurrentLanguage(currentLang);
+        if (window.gcEvent) window.gcEvent('FruitSudoku/lang-start/' + currentLang, 'FruitSudoku · langue à l\'ouverture : ' + currentLang.toUpperCase());
         
         // Toggle du menu dropdown
         dropdownBtn.addEventListener('click', (e) => {
@@ -175,7 +176,8 @@ class SudokuUI {
     _onLanguageChange(lang) {
         console.log(`Changement de langue vers: ${lang}`);
         
-        // Changer la langue
+        // Changer la langue (+ événement de mesure d'audience, sans donnée personnelle)
+        if (lang !== i18n.getLanguage() && window.gcEvent) window.gcEvent('FruitSudoku/lang-switch/' + lang, 'FruitSudoku · langue choisie : ' + lang.toUpperCase());
         i18n.setLanguage(lang);
         
         // Mettre à jour les boutons
